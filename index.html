@@ -1,2 +1,367 @@
-<h1>Hello World!</h1>
-<p>Coming soon ☺</p>
+<!doctype html>
+<html lang="es">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .nombre {
+      font-weight: 300;
+    }
+
+
+    .datos-personales {
+      padding: 1em;
+    }
+
+
+    .datos-personales h2 {
+      font-style: italic;
+    }
+
+    .datos-personales__perfil {
+      padding: 1em;
+    }
+
+    .datos-personales__perfil h1 {
+
+      font-weight: 400;
+      text-transform: uppercase;
+      padding: 10px 0px 20px 0;
+      border-bottom: 3px solid white;
+
+    }
+
+
+    .datos-personales__objetivo {
+      padding-left: 30px;
+      border-left: 3px solid white;
+    }
+
+
+    .datos-personales__datos-personales {
+      padding-left: 33px;
+    }
+
+    .datos-personales__datos-personales p {
+      padding-left: 1em;
+    }
+
+
+
+
+    .datos-personales__conocimientos {
+      padding-left: 33px;
+    }
+
+    .datos-personales__conocimientos p {
+      padding-left: 1em;
+    }
+
+
+    a {
+      text-decoration: none;
+    }
+
+    .linkedin {
+      color: cyan;
+    }
+
+    .mail {
+      color: violet;
+    }
+
+    /*Fin primer modulo de datos personales*/
+
+    .educacion {
+      padding: 1em;
+    }
+
+
+    .educacion h2 {
+      font-weight: bold;
+      font-style: italic;
+      padding-bottom: 0.3em;
+    }
+
+    .educacion-formaciones {
+      margin-bottom: 1em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.154);
+      min-height: 200px;
+    }
+
+    .cursos {
+      border-bottom: none;
+
+    }
+
+    .educacion-formaciones p:nth-child(1) {
+      display: inline-block;
+      padding: 5px 1em 5px 1em;
+      background-color: black;
+      color: whitesmoke;
+      border-radius: 5px;
+    }
+
+    .educacion-formaciones p:nth-child(1) span {
+      font-weight: 100;
+      font-size: 0.8em;
+      color: lightgrey;
+      border-bottom: 20px solid black;
+      border-radius: 0 0 10em 10em;
+    }
+
+    .educacion-formaciones p:nth-child(n+2) span {
+      font-size: 0.8em;
+      font-weight: 400;
+    }
+
+    .educacion-formaciones p:nth-child(n+2) {
+      font-style: italic;
+      font-weight: bold;
+    }
+
+
+
+
+    @media (max-width: 991px) {
+
+      .educacion {
+        text-align: center;
+      }
+
+    }
+  </style>
+
+  <title>Nicolas Capdevielle Resume / Curriculum</title>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row bg-danger">
+
+      <div class="col-12 col-lg-4 datos-personales bg-dark text-white">
+
+
+        <div class="row datos-personales__perfil">
+          <div class="col-6"><img class="img-fluid" src="img/RNico.png" alt="Nicolas Capdevielle Foto perfil">
+          </div>
+          <div class="col-6 ">
+            <h1><span class="nombre">Nicolas</span> Capdevielle</h1>
+            <p>Web Developer</p>
+          </div>
+        </div>
+
+        <div class="col-12 datos-personales__objetivo">
+          <h2>Objetivo</h2>
+          <p>Me destaco por mi pasión en lo que hago, por el mundo de la tecnología y la
+            innovación. Busco un espacio
+            que me permita explotar mis aptitudes, aprender y seguir creciendo en conjunto con personas que compartan
+            la misma pasión.</p>
+        </div>
+
+        <div class="col-12 datos-personales__datos-personales">
+          <h2>Datos Personales</h2>
+          <p>
+            Argentina, Buenos Aires <br>
+            >> <a class="mail" href="mailto:nicolascapdevielle@gmail.com" target="_blank">Enviar Mail</a> <br>
+            >> <a class="linkedin" href="https://www.linkedin.com/in/nicocv" target="_blank">LinkedIn</a> <br>
+            Celular N°: +54112253-0255 <br>
+            Cuil-Cuit: 20-38702380-2 <br>
+            Fecha Nac: 06/03/1995
+          </p>
+        </div>
+
+
+        <div class="col-12 datos-personales__conocimientos">
+          <h2>Programas & Conocimientos</h2>
+          <p>
+            HTML | CSS | SASS | BOOTSTRAP
+            GIT | FILEZILLA | WORDPRESS (+DIVI)
+            <br><br>
+            PHOTOSHOP | ILLUSTRATOR
+            INDESIGN
+            <br><br>
+            AFTEREFFECTS | FILMORA
+          </p>
+        </div>
+      </div>
+      <!--Fin datos personales-->
+
+      <div class="col-12 col-lg-4 educacion bg-light">
+        <h2>EDUCACIÓN</h2>
+
+        <div class="educacion-formaciones">
+          <p>ALURA - ORACLE NEXT EDUCATION <br>
+            <span>Marzo 2022 - Octubre 2022</span>
+          </p>
+          <p>FULL STACK JR. <br> <span>HTML | CSS | JavaScript | Java | SQL | SoftSkills</span></p>
+        </div>
+
+        <div class="educacion-formaciones">
+          <p>CODERHOUSE <br>
+            <span>2021 - 2022</span>
+          </p>
+          <p>DESARROLLO WEB <br> <span>HTML | CSS | SASS | BOOTSTRAP</span></p>
+          <p>JAVASCRIPT <br> <span>Fundamentos de JavaScript y GIT</span></p>
+        </div>
+
+
+        <div class="educacion-formaciones">
+          <p>UNIVERSIDAD CATOLICA ARGENTINA <br>
+            <span>2019 - 2020 | (CURSADA FINALIZADA, 6 FINALES PENDIENTES)</span>
+          </p>
+          <p>LIC. EN COMUNICACIÓN DIGITAL E INTERACTIVA <br> <span>Este ciclo me instruyó en UX/UI, Desarrollo de
+              aplicaciones, Social media
+              management, SEO, Marketing digital, Email Marketing, Growth Hacking,
+              Gestión y creación de contenidos para comunicación interna, externa y
+              en redes sociales.</span></p>
+        </div>
+
+
+        <div class="educacion-formaciones">
+          <p>ESCUELA DE ARTE MULTIMEDIAL DAVINCI<br>
+            <span>2015 - 2018</span>
+          </p>
+          <p>DISEÑADOR MULTIMEDIAL <br> <span>Arte en los medios visuales, edición de video, animación digital,
+              diseño web, desarrollo web, fotomontaje y tratamiento digital de la
+              imagen.</span></p>
+        </div>
+
+
+        <div class="educacion-formaciones">
+          <p>EET N°1 LUCIANO REYES<br>
+            <span>2007 - 2013</span>
+          </p>
+          <p>TÉCNICO QUÍMICO </p>
+        </div>
+
+
+      </div>
+
+
+
+      <!--Fin educacion-->
+      <div class="col-12 col-lg-4 educacion bg-light">
+        <h2>EXPERIENCIA</h2>
+
+        <div class="educacion-formaciones">
+          <p>UNIVERSIDAD DE PALERMO <br>
+            <span>Abril 2020 - Actualidad</span>
+          </p>
+          <p>MAQUETADOR WEB/FRONT-END <br> <span>
+              - Creación de newsletters y sitios webs adaptativos <br>
+              - Mantenimiento del sitio web de la Universidad <br>
+              - Actualización informativa online de la Universidad
+            </span></p>
+        </div>
+
+        <div class="educacion-formaciones">
+          <p>ENTRE TODOS ES POSIBLE (ONG) <br>
+            <span>2018</span>
+          </p>
+          <p>DISEÑADOR DIGITAL <br> <span>
+              - Diseño para redes sociales y folletos
+            </span></p>
+        </div>
+
+        <div class="educacion-formaciones">
+          <p>FREELANCE <br>
+            <span>Marzo 2016 - Abril 2021</span>
+          </p>
+          <p>DISEÑADOR MULTIMEDIAL <br> <span>
+              Comencé mi carrera de diseñador en diferentes plataformas
+              para poder controlar de una buena cartera y aprender a
+              tratar con clientes en el proceso de diseño. Usualmente
+              hago logos, foto-montajes, presentaciones, paginas webs y
+              más.
+            </span></p>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <h2>CURSOS</h2>
+        <div class="educacion-formaciones cursos">
+          <p style="display: none"> <br>
+            <span></span>
+          </p>
+          <p>IMSCORPORATE <br> <span>
+
+              -Certificados de Gaming, EA & Twitch
+
+            </span></p>
+          <p>GOOGLE ACTIVATE <br> <span>
+
+              -Introducciónal desarrollo web: HTML+CSS
+
+            </span></p>
+          <p>Centro del comercio e industria (Zarate) <br> <span>
+
+              -Marketingenproductosproductos
+
+            </span></p>
+        </div>
+
+
+
+
+
+
+      </div>
+      <!--Fin experiencia-->
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+  <!-- Optional JavaScript; choose one of the two! -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>
