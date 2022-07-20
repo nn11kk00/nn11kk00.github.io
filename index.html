@@ -184,6 +184,35 @@
     }
 
 
+
+
+    .proyectos-lista {
+      border-bottom: 1px solid white;
+      padding-top: 1em;
+
+    }
+
+    .text-palermo {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .text-palermo a {
+      display: inline-block;
+    }
+
+    h5 img {
+      margin: 10px 10px 10px 1em;
+      width: 25px;
+    }
+
+
+    .collapsed {
+      color: white;
+      background-color: rgb(166, 33, 255);
+    }
+
+    /*MEDIA QUERYS*/
     @media (max-width: 991px) {
 
 
@@ -312,8 +341,227 @@
 
 
 
+          <!--PROYECTOS-->
+          <!-- Button trigger modal -->
+          <a class="my-4" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Ver Proyectos..
+          </a>
+
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content bg-dark">
+                <div class="modal-header  ">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    <img class="img-fluid" src="img/html5.png" alt="codigo utilizado en proyectos">
+                    <img class="img-fluid" src="img/css3.png" alt="codigo utilizado en proyectos">
+                    <img class="img-fluid" src="img/sass.png" alt="codigo utilizado en proyectos">
+                    <img class="img-fluid" src="img/bootstrap.png" alt="codigo utilizado en proyectos">
+                    <img class="img-fluid" src="img/wordpress.png" alt="codigo utilizado en proyectos">
+                  </h5>
+                  <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <!--BODY MODAL-->
 
 
+
+
+
+
+
+                  <div class="accordion container " id="accordionExample">
+
+                    <div class="accordion-item bg-dark">
+
+                      <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button " type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                          Proyectos con codigo
+                        </button>
+                      </h2>
+                      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+
+
+                          <div class="proyectos-lista">
+                            <p><strong>Proyectos para:</strong> Universidad de Palermo <br><strong>Descripción:</strong>
+                              Desarrollo con framework personalizado de la universidad, muy similar a bootstrap e
+                              implementando feed de redes sociales. <br>
+                              <small><em>Newsletters realizados para la misma empresa.</em></small>
+                            </p>
+                            <ul>
+                              <li> HTML</li>
+                              <li> CSS </li>
+                              <li>JavaScript</li>
+                              <li> SEO <em>Basic</em></li>
+                            </ul>
+
+                            <p class="text-palermo">
+                              <a target="_blank" class="text-warning text-decoration-none "
+                                href="https://www.palermo.edu/cienciassociales/psicologia/licenciatura-psicologia.html">DEMO</a>
+                              <a target="_blank" class="text-warning text-decoration-none "
+                                href="https://www.palermo.edu/cienciassociales/periodismo/digital/">DEMO</a><a
+                                target="_blank" class="text-warning text-decoration-none "
+                                href="https://www.palermo.edu/derecho/nummus/index.html">DEMO</a><a target="_blank"
+                                class="text-warning text-decoration-none "
+                                href="https://www.palermo.edu/la_universidad/redes-sociales.html">DEMO</a>
+                            </p>
+                          </div>
+                          <!--separador de proyectos-->
+
+                          <div class="proyectos-lista">
+                            <p><strong>Proyecto:</strong> Othila <br><strong>Descripción:</strong>
+                              Desarrollo de sitio web con bootstrap + formulario de whatsapp configurado con JS.</p>
+                            <ul>
+                              <li> HTML</li>
+                              <li> CSS </li>
+                              <li>Bootstrap</li>
+                              <li>JavaScript</li>
+                              <li> SEO <em>Basic</em></li>
+                            </ul>
+
+                            <p class="text-end ">
+                              <a target="_blank" class="text-warning text-decoration-none "
+                                href="http://othila.ar/">DEMO</a>
+                            </p>
+                          </div>
+                          <!--separador de proyectos-->
+                          <div class="proyectos-lista">
+                            <p><strong>Proyecto:</strong> Ciencia Educa Argentina
+                              <br><strong>Descripción:</strong>Desarrollo de landing page
+                            </p>
+                            <ul>
+                              <li> HTML</li>
+                              <li> CSS </li>
+                              <li>Bootstrap</li>
+                              <li>Animate.css</li>
+                              <li> SEO <em>Basic</em></li>
+                            </ul>
+
+                            <p class="text-end ">
+                              <a target="_blank" class="text-warning text-decoration-none "
+                                href="https://www.cienciaeduca.com.ar/">DEMO</a>
+                            </p>
+                          </div>
+                          <!--separador de proyectos-->
+                          <div class="proyectos-lista">
+                            <p><strong>Proyecto propio de practica</strong> <br><strong>Descripción:</strong> Desarrollo
+                              destinado a portfolio personal a modo de practica para implementar los lenguajes de
+                              maquetación.
+                            </p>
+                            <ul>
+                              <li> HTML</li>
+                              <li> CSS </li>
+                              <li>Bootstrap</li>
+                            </ul>
+
+                            <p class="text-end ">
+                              <a target="_blank" class="text-warning text-decoration-none "
+                                href="https://nn11kk00.github.io/4taEntregaCoderHouse_NCapdevielle/">DEMO</a>
+                            </p>
+                          </div>
+                          <!--separador de proyectos-->
+
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="accordion-item bg-dark">
+
+                      <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          Proyectos con Wordpress
+                        </button>
+                      </h2>
+                      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+
+                          <div class="proyectos-lista">
+                            <p><strong>Proyecto:</strong> Lopez Castro <br><strong>Descripción:</strong> Actualizacion
+                              de
+                              <em>Wix</em> a Wordpress con sección de catalogos, cambio y configuración de hosting.
+                            </p>
+                            <ul>
+                              <li> Wordpress</li>
+                              <li> Divi <em>Builder</em></li>
+                            </ul>
+
+                            <p class="text-end ">
+                              <a target="_blank" class="text-warning text-decoration-none "
+                                href="https://www.lopezcastro.com.ar/">DEMO</a>
+                            </p>
+                          </div>
+                          <!--separador de proyectos-->
+
+                          <div class="proyectos-lista">
+                            <p><strong>Proyecto:</strong> MAJES <br><strong>Descripción:</strong> Desarrollo y diseño de
+                              web
+                              autoadministrable implementando wordpress</p>
+                            <ul>
+                              <li> Wordpress</li>
+                              <li> Divi <em>Builder</em></li>
+                              <li>Traslatepass</li>
+                              <li> SEO <em>Basic</em></li>
+                            </ul>
+
+                            <p class="text-end ">
+                              <a target="_blank" class="text-warning text-decoration-none "
+                                href="https://majes.com.ar/">DEMO</a>
+                            </p>
+                          </div>
+                          <!--separador de proyectos-->
+                          <div class="proyectos-lista">
+                            <p><strong>Proyecto:</strong> EU MAP - Consulting
+                              <br><strong>Descripción:</strong>Actualización de <em>Flash</em> a Wordpress adaptando el
+                              sitio a dispositivos moviles.
+                            </p>
+                            <ul>
+                              <li> Wordpress</li>
+                              <li> Divi <em>Builder</em></li>
+                              </li>
+                            </ul>
+
+                            <p class="text-end ">
+                              <a target="_blank" class="text-warning text-decoration-none "
+                                href="https://eumap-consulting.eu/">DEMO</a>
+                            </p>
+                          </div>
+                          <!--separador de proyectos-->
+                          <div class="proyectos-lista">
+                            <p><strong>Proyecto:</strong> MELB <br><strong>Descripción:</strong> Actualizacion de
+                              <em>Flash</em> a Wordpress obteniendo un sitio autoadministrable y dinamico con galeria de
+                              instagram.
+                            </p>
+                            <ul>
+                              <li> Wordpress</li>
+                              <li> Elementor</li>
+                            </ul>
+
+                            <p class="text-end ">
+                              <a target="_blank" class="text-warning text-decoration-none "
+                                href="http://melb.com.ar/">DEMO</a>
+                            </p>
+                          </div>
+                          <!--separador de proyectos-->
+                        </div>
+                      </div>
+
+
+                      <!--fin body modal-->
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <!--PROYECTOS-->
+            </div>
+          </div>
         </div>
 
       </div>
