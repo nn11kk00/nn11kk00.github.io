@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"><!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <!--Css propio-->
-  <link rel="stylesheet" href="css/estilos.min.css">
+  <link rel="stylesheet" href="css/estilos.css">
   <title>Nicolas Capdevielle Resume / Curriculum</title>
 
   <!-- Google tag (gtag.js) -->
@@ -26,6 +26,11 @@
 </head>
 
 <body>
+
+  <button class="music-toggle" type="button" aria-pressed="false" aria-label="Activar o desactivar musica retrogame">
+    <span class="music-toggle__indicator" aria-hidden="true">♪</span>
+    MUSICA: OFF
+  </button>
 
   <!---
     <p class="descargar-cv"><a href="javascript:download();">Descargar curriculum</a> <span s class="d-inline-block"
@@ -47,14 +52,12 @@
           </div>
           <div class="col-12 col-md-6">
             <h1><span class="nombre">Nicolas</span> Capdevielle</h1>
-            <p>Analista & Desarrollador Web | Diseñador Multimedial</p>
+            <p>Analista Programador</p>
           </div>
         </div>
         <div class="col-12 datos-personales__objetivo">
-          <h2>Objetivo</h2>
-          <p>Me destaco por mi pasión en lo que hago, por el mundo de la tecnología y la innovación. Busco un espacio
-            que me permita explotar mis aptitudes, aprender y seguir creciendo en conjunto con personas que compartan la
-            misma pasión.</p>
+          <h2>Sobre mí</h2>
+          <p>Soy Analista Programador enfocado en crear soluciones digitales eficientes. Combino análisis, diseño multimedia y herramientas de Inteligencia Artificial para optimizar procesos. Me destaco por mi adaptabilidad y capacidad de conectar las necesidades del negocio con los equipos técnicos. Busco seguir creciendo y aportar valor mediante una visión técnica, creativa y orientada a resultados.</p>
         </div>
         <div class="col-12 datos-personales__datos-personales">
           <h2>Datos Personales</h2>
@@ -149,6 +152,8 @@
             <a class="my-2 btn btn-primary w-100" href="https://www.behance.net/alexcv" target="_blank">Ver Proyectos
               Gráficos</a>
             <br>
+            <a class="my-2 btn btn-warning w-100" href="catalogos-vibe-code.html">Ver proyectos Vibe-Coding</a>
+            <br>
           </p><!-- Modal -->
           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -179,11 +184,11 @@
                   </h5><button type="button" class="btn-close bg-light me-2" data-bs-dismiss="modal"
                     aria-label="Close"></button>
                 </div>
-                <div class="modal-body"><!--BODY MODAL-->
+                <div class="modal-body web-project-modal"><!--BODY MODAL-->
                   <!--No acordeon inicio-->
-                  <div class="container-fluid ">
+                  <div class="container-fluid">
 
-                    <div class="row w-100 m-auto">
+                    <div class="web-project-grid">
 
                       <div class="col-md-6 col-12">
                         <a target="_blank" class="text-warning text-decoration-none"
@@ -319,12 +324,32 @@
           </div>
         </div>
 
+        <section class="hobbies" aria-labelledby="hobbies-title">
+          <h2 id="hobbies-title">HOBBIES</h2>
+          <div class="hobby-item">
+            <span class="hobby-icon" aria-hidden="true">&#127916;</span>
+            <span>Edición de video y creación de contenido</span>
+          </div>
+          <div class="hobby-item">
+            <span class="hobby-icon" aria-hidden="true">&#129302;</span>
+            <span>Vibe-Coding para crear proyectos, juegos y webs</span>
+          </div>
+          <div class="hobby-item">
+            <span class="hobby-icon" aria-hidden="true">&#127918;</span>
+            <span>Videojuegos</span>
+          </div>
+        </section>
+
 
 
       </div><!--Fin datos personales-->
       <div class="col-12 col-lg-4 educacion bg-light">
         <h2>EDUCACIÓN</h2>
 
+        <div class="educacion-formaciones">
+          <p>CENTRO DE E-LEARNING UTN FRBA<br><span>ago. 2025 - Actualidad</span><br><strong class="triangulo">◥</strong></p>
+          <p>TECNICATURA UNIVERSITARIA EN PROGRAMACIÓN<br><span>Formación en desarrollo de software, lógica de programación y análisis de sistemas, con enfoque en metodologías y herramientas para la construcción de aplicaciones eficientes.</span></p>
+        </div>
         <div class="educacion-formaciones">
           <p>UNIVERSIDAD CATOLICA ARGENTINA<br><span>2019 - 2020 | (CURSADA FINALIZADA, 4 FINALES
               PENDIENTES)</span><br><strong class="triangulo">◥</strong></p>
@@ -349,26 +374,9 @@
 
         <h2>CURSOS</h2>
         <div class="educacion-formaciones cursos">
-          <p style="display:none"><br><span></span></p>
-
-
-          <p> English for employment IT:<br><span>Elementary Communication & Technical Skills
-            </span> </p>
-          <p> Instituto Federal Rio Grande do Sul:<br><span>Língua Portuguesa e Cultura Brasileira para Estrangeiros
-              Básico
-            </span> </p>
-          <p> Codo a Codo 4.0:<br><span>Full Stack con Java
-            </span> </p>
-          <p> Coderhouse:<br><span>Desarrollo Web<br>Javascript<br>Programación con Java
-            </span> </p>
-          <p> Oracle Next Education:<br><span>Front-End Jr.
-            </span> </p>
-          <p> Todo Code Academy:<br><span>Introducción a base de datos(MySQL)<br>Java Básico
-            </span> </p>
-          <p> Google Actívate:<br><span>Introducción al desarrollo web 1 & 2
-            </span> </p>
-          <p> Centro de Comercio e Industrias de Zárate:<br><span>Marketing en productos
-            </span> </p>
+          <p class="curso-titulo">Microsoft &amp; LinkedIn Learning:<br><span>Introducción a las habilidades profesionales en análisis de datos (En curso)</span></p>
+          <p class="curso-titulo">English for employment IT:<br><span>Elementary Communication &amp; Technical Skills</span></p>
+          <p class="curso-titulo">Codo a Codo 4.0:<br><span>Full Stack con Java</span></p>
 
         </div>
 
@@ -382,29 +390,20 @@
         <h2>EXPERIENCIA</h2>
         
         <div class="educacion-formaciones">
-          <p>CORREO ARGENTINO<br><span>Marzo 2025 - Actualidad</span><br><strong class="triangulo">◥</strong></p>
+          <p>CORREO ARGENTINO<br><span>Marzo 2025 - Junio 2026</span><br><strong class="triangulo">◥</strong></p>
           <p>Analista Funcional<br>
             <span>- Testing de aplicaciones<br>- Reportes de bugs<br>- Documentación de funcionalidades<br>- Microsoft Office (Teams, Word, Excel..)</p>
         
         </div>
         
-         <div class="educacion-formaciones">
-          <p>BANCO DE LA NACIÓN ARGENTINA<br><span>Enero 2025 - Marzo 2025</span><br><strong class="triangulo">◥</strong></p>
-          <p>Analista de Procedimientos<br><span>- Diagramas BPMN<br>- Actualización de reglamentación y normativas<br>- Participación en análisis de procesos<br>- Microsoft Office (Teams, Word, Excel..)<br>- Bizagi y Enterprise Architect</p>
-        </div>
         <div class="educacion-formaciones">
-          <p>BANCO DE LA NACIÓN ARGENTINA<br><span>Junio 2024 - Diciembre 2024</span><br><strong class="triangulo">◥</strong></p>
-          <p>Analista Funcional<br><span>- Control de Incidentes
-            <br>- Requisitos Funcionales<br>- Documentación Técnica<br>- Microsoft Office (Teams, Word, Excel..)</p>
+          <p>BANCO DE LA NACIÓN ARGENTINA<br><span>Junio 2024 - Marzo 2025</span><br><strong class="triangulo">◥</strong></p>
+          <p>ANALISTA FUNCIONAL Y DE PROCEDIMIENTOS<br><span>- Control de incidentes y reportes de bugs<br>- Requisitos funcionales y documentación técnica<br>- Diagramas BPMN y análisis de procesos<br>- Actualización de reglamentación y normativas<br>- Microsoft Office (Teams, Word, Excel..)<br>- Bizagi y Enterprise Architect</span></p>
         </div>
         <div class="educacion-formaciones">
           <p>UNIVERSIDAD DE PALERMO<br><span>Abril 2020 - Junio 2023</span><br><strong class="triangulo">◥</strong></p>
           <p>MAQUETADOR WEB/FRONT-END<br><span>- Creación de newsletters y sitios webs adaptativos<br>- Mantenimiento
               del sitio web de la Universidad<br>- Actualización informativa online de la Universidad</span></p>
-        </div>
-        <div class="educacion-formaciones">
-          <p>ENTRE TODOS ES POSIBLE (ONG)<br><span>2018</span><br><strong class="triangulo">◥</strong></p>
-          <p>DISEÑADOR DIGITAL<br><span>- Diseño para redes sociales y folletos</span></p>
         </div>
         <div class="educacion-formaciones">
           <p>FREELANCE<br><span>Marzo 2016 - Actualidad</span><br><strong class="triangulo">◥</strong></p>
@@ -429,6 +428,50 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script><!--SCRIPT SCREENSHOT-->
   <script src="js/html2canvas.min.js"></script>
+  <script>
+    (() => {
+      const toggle = document.querySelector('.music-toggle');
+      let audioContext;
+      let masterGain;
+      let musicTimer;
+      let noteIndex = 0;
+      const melody = [261.63, 329.63, 392, 329.63, 293.66, 349.23, 440, 349.23];
+
+      function playNote() {
+        if (!audioContext || audioContext.state !== 'running') return;
+        const oscillator = audioContext.createOscillator();
+        const noteGain = audioContext.createGain();
+        oscillator.type = 'square';
+        oscillator.frequency.value = melody[noteIndex++ % melody.length];
+        noteGain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+        noteGain.gain.exponentialRampToValueAtTime(0.018, audioContext.currentTime + 0.02);
+        noteGain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.32);
+        oscillator.connect(noteGain).connect(masterGain);
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.34);
+      }
+
+      function setMusic(enabled) {
+        if (enabled) {
+          audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+          masterGain = masterGain || audioContext.createGain();
+          masterGain.gain.value = 0.22;
+          masterGain.connect(audioContext.destination);
+          audioContext.resume();
+          playNote();
+          musicTimer = window.setInterval(playNote, 380);
+        } else {
+          window.clearInterval(musicTimer);
+          if (masterGain) masterGain.gain.value = 0;
+        }
+        toggle.setAttribute('aria-pressed', enabled);
+        toggle.classList.toggle('is-playing', enabled);
+        toggle.innerHTML = '<span class="music-toggle__indicator" aria-hidden="true">♪</span> MUSICA: ' + (enabled ? 'ON' : 'OFF');
+      }
+
+      toggle.addEventListener('click', () => setMusic(toggle.getAttribute('aria-pressed') !== 'true'));
+    })();
+  </script>
 </body>
 
 </html>

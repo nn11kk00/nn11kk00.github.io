@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catalogo Vibe-Coding | Nicolas Capdevielle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080b16;
+      --panel: #11182a;
+      --line: #2bdfd1;
+      --pink: #ff5c8a;
+      --gold: #ffd166;
+      --text: #eef5ff;
+      --muted: #a8b8ca;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      font-family: "Space Mono", monospace;
+      background:
+        linear-gradient(rgba(43, 223, 209, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(43, 223, 209, .035) 1px, transparent 1px),
+        radial-gradient(circle at 85% 5%, rgba(255, 92, 138, .16), transparent 30%),
+        linear-gradient(135deg, #080b16, #11152a 55%, #1a1024);
+      background-size: 32px 32px, 32px 32px, auto, auto;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(to bottom, rgba(255,255,255,.035), rgba(255,255,255,.035) 1px, transparent 1px, transparent 4px);
+    }
+
+    header, main, footer { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; }
+    header { padding: 2rem 0 1rem; }
+
+    nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .brand { color: var(--gold); font: 12px "Press Start 2P", monospace; letter-spacing: .08em; }
+    nav a, .back { color: var(--line); text-decoration: none; font-weight: 700; }
+    nav a:hover, .back:hover { color: var(--gold); }
+
+    main { padding: 4rem 0 3rem; }
+    .eyebrow { color: var(--line); font: 10px "Press Start 2P", monospace; letter-spacing: .1em; }
+    h1 { max-width: 780px; margin: 1.4rem 0 1rem; color: var(--gold); font: clamp(1.35rem, 4vw, 2.8rem)/1.45 "Press Start 2P", monospace; text-shadow: 4px 4px 0 rgba(255, 92, 138, .55); }
+    .intro { max-width: 650px; margin-bottom: 3rem; color: var(--muted); line-height: 1.8; }
+
+    .catalog { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    .project { min-height: 260px; padding: 1.25rem; color: var(--text); text-decoration: none; border: 1px solid rgba(43, 223, 209, .4); background: linear-gradient(160deg, rgba(17,24,42,.95), rgba(16,14,35,.95)); box-shadow: 6px 6px 0 rgba(43, 223, 209, .12); transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+    .project:hover { transform: translateY(-5px); border-color: var(--gold); box-shadow: 6px 6px 0 rgba(255, 92, 138, .7); }
+    .project--empty { opacity: .65; border-style: dashed; }
+    .project__number { color: var(--pink); font-size: .8rem; }
+    .project h2 { margin: 2.5rem 0 .8rem; color: var(--gold); font: 1rem/1.7 "Press Start 2P", monospace; }
+    .project p { margin: 0; color: var(--muted); line-height: 1.7; }
+    .project__tag { display: inline-block; margin-top: 1.5rem; padding: .45rem .6rem; color: var(--bg); background: var(--line); font-size: .75rem; font-weight: 700; }
+    footer { padding-bottom: 2rem; }
+    .back { display: inline-block; padding: .8rem 1rem; border: 1px solid var(--line); font-size: .8rem; }
+
+    @media (max-width: 760px) {
+      main { padding-top: 3rem; }
+      .catalog { grid-template-columns: 1fr; }
+      .project { min-height: 210px; }
+      .project h2 { margin-top: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="brand">NC-95 // VIBE LAB</div>
+      <a href="index.html">&lt; Volver al portfolio</a>
+    </nav>
+  </header>
+  <main>
+    <div class="eyebrow">Catalogo de experimentos y proyectos</div>
+    <h1>Proyectos Vibe-Coding</h1>
+    <p class="intro">Un espacio para reunir proyectos creados explorando ideas, herramientas digitales e Inteligencia Artificial como parte del proceso de desarrollo.</p>
+    <section class="catalog" aria-label="Proyectos Vibe-Coding">
+      <a class="project" href="mini-juegos/index.html">
+        <div class="project__number">01 // ACTIVO</div>
+        <h2>Mini Juegos</h2>
+        <p>Una pequena sala arcade con juegos web para jugar, experimentar y seguir agregando ideas.</p>
+        <span class="project__tag">Entrar al proyecto</span>
+      </a>
+      <article class="project project--empty">
+        <div class="project__number">02 // PROXIMAMENTE</div>
+        <h2>Nuevo proyecto</h2>
+        <p>Proximo experimento Vibe-Coding.</p>
+        <span class="project__tag">En desarrollo</span>
+      </article>
+      <article class="project project--empty">
+        <div class="project__number">03 // PROXIMAMENTE</div>
+        <h2>Nuevo proyecto</h2>
+        <p>Un nuevo espacio para convertir una idea en algo navegable.</p>
+        <span class="project__tag">En desarrollo</span>
+      </article>
+    </section>
+  </main>
+  <footer>
+    <a class="back" href="index.html">&lt; Volver al portfolio</a>
+  </footer>
+</body>
+</html>
