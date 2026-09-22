@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GameLab | Mini Juegos</title>
+    <style>
+      :root {
+        --bg-1: #050816;
+        --bg-2: #120f2a;
+        --bg-3: #1d1130;
+        --panel: rgba(12, 18, 35, 0.9);
+        --line: rgba(109, 238, 255, 0.38);
+        --text: #edf8ff;
+        --muted: #cfe7ff;
+        --accent: #c77dff;
+        --gold: #ffd166;
+        --player: #4de0ff;
+        --danger: #ff6b6b;
+        --success: #7ef29a;
+        --shadow: rgba(0, 0, 0, 0.45);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background:
+          radial-gradient(circle at top, rgba(199, 125, 255, 0.22), transparent 25%),
+          linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+        color: var(--text);
+        position: relative;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.03),
+          rgba(255,255,255,0.03) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+        pointer-events: none;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      header {
+        background: rgba(9, 14, 30, 0.9);
+        border-bottom: 1px solid var(--line);
+        box-shadow: 0 0 20px rgba(77, 224, 255, 0.25);
+      }
+
+      nav {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .brand {
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold);
+        text-shadow: 0 0 12px rgba(255, 209, 102, 0.8);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.9;
+        padding: 0.55rem 0.85rem;
+        border: 1px solid transparent;
+        border-radius: 10px;
+      }
+
+      .nav-links a:hover {
+        opacity: 1;
+        border-color: var(--line);
+        box-shadow: 0 0 16px rgba(77,224,255,0.38);
+      }
+
+      main {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 2rem 1rem 3rem;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 2rem;
+        align-items: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .hero-copy {
+        padding: 1rem 0;
+      }
+
+      .eyebrow {
+        color: var(--player);
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+      }
+
+      h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(2.5rem, 6vw, 5rem);
+        line-height: 0.95;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-shadow: 0 0 18px rgba(77,224,255,0.6);
+      }
+
+      .hero-copy p {
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.7;
+        max-width: 58ch;
+        margin: 0 0 1.5rem;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .cta {
+        display: inline-block;
+        padding: 0.9rem 1.3rem;
+        border-radius: 12px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border: 1px solid transparent;
+      }
+
+      .cta.primary {
+        background: linear-gradient(135deg, var(--accent), #6d5efc);
+        color: white;
+        box-shadow: 0 0 20px rgba(199,125,255,0.3);
+      }
+
+      .cta.secondary {
+        border-color: var(--line);
+        color: var(--text);
+      }
+
+      .hero-panel {
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(12, 16, 29, 0.82));
+        border: 2px solid var(--line);
+        border-radius: 24px;
+        padding: 1.2rem;
+        box-shadow: 0 0 0 2px rgba(79,70,229,0.2), 0 0 35px rgba(77,224,255,0.18);
+      }
+
+      .mini-preview {
+        width: 100%;
+        height: 260px;
+        border-radius: 18px;
+        background:
+          linear-gradient(135deg, rgba(77,224,255,0.15), rgba(199,125,255,0.18)),
+          rgba(17,24,39,0.8);
+        border: 1px solid rgba(77,224,255,0.24);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .mini-preview::before,
+      .mini-preview::after {
+        content: "";
+        position: absolute;
+        inset: 18px;
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,0.08);
+      }
+
+      .mini-preview .pixel {
+        position: absolute;
+        border-radius: 10px;
+        box-shadow: 0 0 16px rgba(77,224,255,0.18);
+      }
+
+      .mini-preview .pixel.a {
+        width: 54px; height: 54px; background: #4de0ff; left: 26px; top: 42px;
+      }
+      .mini-preview .pixel.b {
+        width: 54px; height: 54px; background: #c77dff; left: 96px; top: 72px;
+      }
+      .mini-preview .pixel.c {
+        width: 54px; height: 54px; background: #ffd166; left: 164px; top: 50px;
+      }
+      .mini-preview .pixel.d {
+        width: 100px; height: 18px; background: #4de0ff; left: 32px; bottom: 48px;
+      }
+      .mini-preview .pixel.e {
+        width: 150px; height: 18px; background: #7ef29a; right: 28px; top: 42px;
+      }
+      .mini-preview .pixel.f {
+        width: 110px; height: 18px; background: #ff6b6b; right: 44px; bottom: 32px;
+      }
+
+      .games-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(220px, 1fr));
+        gap: 1.4rem;
+        margin-top: 2.5rem;
+      }
+
+      .game-card {
+        position: relative;
+        display: block;
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(12, 16, 29, 0.82));
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 0 0 2px rgba(79,70,229,0.12), 0 0 30px rgba(77,224,255,0.12);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .game-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0 0 2px rgba(79,70,229,0.22), 0 0 30px rgba(77,224,255,0.2);
+      }
+
+      .thumb {
+        height: 180px;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      }
+
+      .thumb.tateti {
+        background: linear-gradient(135deg, rgba(77,224,255,0.18), rgba(12,16,29,0.9));
+      }
+
+      .thumb.ajedrez {
+        background: linear-gradient(135deg, rgba(199,125,255,0.2), rgba(12,16,29,0.9));
+      }
+
+      .thumb.arkanoid {
+        background: linear-gradient(135deg, rgba(126,242,154,0.18), rgba(12,16,29,0.9));
+      }
+
+      .thumb::before {
+        content: "";
+        position: absolute;
+        inset: 16px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.09);
+      }
+
+      .grid-mini {
+        position: absolute;
+        inset: 28px 18px 18px 18px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .cell {
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        font-weight: 900;
+        border: 1px solid rgba(255,255,255,0.12);
+      }
+
+      .thumb.tateti .cell {
+        background: rgba(16,24,40,0.75);
+        color: var(--text);
+      }
+
+      .thumb.ajedrez .cell {
+        background: rgba(8,12,30,0.75);
+        color: #fff;
+      }
+
+      .thumb.ajedrez .cell.light { background: #f0d9b5; color: #0f172a; }
+      .thumb.ajedrez .cell.dark { background: #7c4f2a; color: #f8fafc; }
+
+      .thumb.arkanoid .cell {
+        background: rgba(10,20,30,0.7);
+        border-radius: 8px;
+      }
+
+      .thumb.arkanoid .cell.bar {
+        background: linear-gradient(90deg, #4de0ff, #7ef29a);
+      }
+
+      .thumb.arkanoid .cell.ball {
+        background: #ff6b6b;
+        border-radius: 50%;
+      }
+
+      .game-card-body {
+        padding: 1.2rem 1rem 1.3rem;
+      }
+
+      .game-card h3 {
+        margin: 0 0 0.4rem;
+        font-size: 1.25rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .game-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .tag {
+        display: inline-flex;
+        margin-top: 0.9rem;
+        padding: 0.45rem 0.7rem;
+        border-radius: 999px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        background: rgba(77,224,255,0.12);
+        border: 1px solid rgba(77,224,255,0.3);
+        color: var(--player);
+      }
+
+      footer {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 1rem 2rem;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .games-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="portfolio-back" href="../index.html" style="position: fixed; top: 1rem; left: 1rem; z-index: 10; padding: .65rem .8rem; color: var(--gold); background: rgba(9, 14, 30, .94); border: 1px solid var(--gold); box-shadow: 4px 4px 0 rgba(255, 107, 107, .7); font-size: .7rem; font-weight: 900; letter-spacing: .06em; text-decoration: none;">&lt; VOLVER AL PORTFOLIO</a>
+    <header>
+      <nav>
+        <div class="brand">GameLab</div>
+        <div class="nav-links">
+          <a href="#inicio">Inicio</a>
+          <a href="tateti.html">TaTeTi</a>
+          <a href="ajedrez.html">Ajedrez</a>
+          <a href="arkanoid.html">Arkanoid</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="inicio">
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">Mini juegos de arcade</div>
+          <h1>Jugá, competí y desafiate.</h1>
+          <p>
+            Un rincón con mini juegos hechos en HTML, CSS y JavaScript. Desde partidas rápidas de lógica hasta desafíos arcade con estilo neon.
+          </p>
+          <div class="cta-row">
+            <a class="cta primary" href="#catalogo">Ver juegos</a>
+            <a class="cta secondary" href="tateti.html">Jugar ahora</a>
+          </div>
+        </div>
+
+        <div class="hero-panel">
+          <div class="mini-preview">
+            <span class="pixel a"></span>
+            <span class="pixel b"></span>
+            <span class="pixel c"></span>
+            <span class="pixel d"></span>
+            <span class="pixel e"></span>
+            <span class="pixel f"></span>
+          </div>
+        </div>
+      </section>
+
+      <section id="catalogo">
+        <div class="games-grid">
+          <a class="game-card" href="tateti.html">
+            <div class="thumb tateti">
+              <div class="grid-mini">
+                <div class="cell">X</div>
+                <div class="cell">O</div>
+                <div class="cell">X</div>
+                <div class="cell">O</div>
+                <div class="cell">X</div>
+                <div class="cell">O</div>
+                <div class="cell">X</div>
+                <div class="cell">O</div>
+                <div class="cell">X</div>
+              </div>
+            </div>
+            <div class="game-card-body">
+              <h3>TaTeTi</h3>
+              <p>Partida rápida, lógica pura y victoria en línea.</p>
+              <span class="tag">Arcade</span>
+            </div>
+          </a>
+
+          <a class="game-card" href="ajedrez.html">
+            <div class="thumb ajedrez">
+              <div class="grid-mini">
+                <div class="cell light">♔</div>
+                <div class="cell dark">♚</div>
+                <div class="cell light">♕</div>
+                <div class="cell dark">♛</div>
+                <div class="cell light">♖</div>
+                <div class="cell dark">♜</div>
+                <div class="cell light">♗</div>
+                <div class="cell dark">♝</div>
+                <div class="cell light">♘</div>
+              </div>
+            </div>
+            <div class="game-card-body">
+              <h3>Ajedrez</h3>
+              <p>Tablero clásico con Inteligencia artificial básica.</p>
+              <span class="tag">Estrategia</span>
+            </div>
+          </a>
+
+          <a class="game-card" href="arkanoid.html">
+            <div class="thumb arkanoid">
+              <div class="grid-mini">
+                <div class="cell bar"></div>
+                <div class="cell bar"></div>
+                <div class="cell bar"></div>
+                <div class="cell"></div>
+                <div class="cell ball"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+              </div>
+            </div>
+            <div class="game-card-body">
+              <h3>Arkanoid</h3>
+              <p>Rompe ladrillos, activa poderes y mantén la barra viva.</p>
+              <span class="tag">Arcade</span>
+            </div>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      © 2026 GameLab · Mini juegos en línea
+    </footer>
+  </body>
+</html>

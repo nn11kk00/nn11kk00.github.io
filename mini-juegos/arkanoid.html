@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arkanoid</title>
+    <style>
+      :root {
+        --bg-1: #050816;
+        --bg-2: #120f2a;
+        --bg-3: #1d1130;
+        --panel: rgba(12, 18, 35, 0.9);
+        --line: rgba(109, 238, 255, 0.38);
+        --text: #edf8ff;
+        --muted: #cfe7ff;
+        --accent: #c77dff;
+        --gold: #ffd166;
+        --player: #4de0ff;
+        --danger: #ff6b6b;
+        --success: #7ef29a;
+        --shadow: rgba(0, 0, 0, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background:
+          radial-gradient(circle at top, rgba(199, 125, 255, 0.22), transparent 25%),
+          linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+        color: var(--text);
+        position: relative;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.03),
+          rgba(255, 255, 255, 0.03) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+        pointer-events: none;
+      }
+
+      header {
+        background: rgba(9, 14, 30, 0.9);
+        border-bottom: 1px solid var(--line);
+        box-shadow: 0 0 20px rgba(77, 224, 255, 0.25);
+      }
+
+      nav {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .brand {
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold);
+        text-shadow: 0 0 12px rgba(255, 209, 102, 0.8);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.9;
+        padding: 0.55rem 0.85rem;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        transition: 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        opacity: 1;
+        border-color: var(--line);
+        box-shadow: 0 0 16px rgba(77, 224, 255, 0.38);
+      }
+
+      main {
+        max-width: 980px;
+        margin: 2rem auto;
+        padding: 0 1rem 2rem;
+      }
+
+      .game-shell {
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(12, 16, 29, 0.82));
+        border: 2px solid var(--line);
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow:
+          0 0 0 2px rgba(79, 70, 229, 0.2),
+          0 0 35px rgba(77, 224, 255, 0.18),
+          0 18px 50px var(--shadow);
+      }
+
+      .title-wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 3.1rem);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-shadow: 0 0 18px rgba(77, 224, 255, 0.6);
+      }
+
+      .status {
+        background: rgba(199, 125, 255, 0.12);
+        border: 1px solid rgba(199, 125, 255, 0.6);
+        box-shadow: 0 0 18px rgba(199, 125, 255, 0.2);
+        color: var(--muted);
+        border-radius: 999px;
+        padding: 0.8rem 1.1rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .hud {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(120px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.3rem;
+      }
+
+      .score-box {
+        background: rgba(17, 24, 39, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 0.9rem 1rem;
+        text-align: center;
+      }
+
+      .score-label {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 0.4rem;
+      }
+
+      .score-value {
+        font-size: clamp(1.5rem, 3vw, 2.1rem);
+        font-weight: 900;
+        color: var(--gold);
+      }
+
+      .board-wrap {
+        display: grid;
+        grid-template-columns: minmax(260px, 1fr) minmax(220px, 320px);
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .arena {
+        background: rgba(17, 24, 39, 0.8);
+        border: 1px solid rgba(77, 224, 255, 0.3);
+        border-radius: 22px;
+        padding: 0.8rem;
+        box-shadow: inset 0 0 25px rgba(77, 224, 255, 0.08);
+      }
+
+      canvas {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.3));
+      }
+
+      .side-panel {
+        background: rgba(16, 24, 40, 0.9);
+        border: 1px solid rgba(255, 209, 102, 0.28);
+        border-radius: 20px;
+        padding: 1.2rem;
+      }
+
+      .legend {
+        display: grid;
+        gap: 0.8rem;
+        color: var(--muted);
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 600;
+      }
+
+      .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .dot.player { background: var(--player); }
+      .dot.danger { background: var(--danger); }
+      .dot.success { background: var(--success); }
+
+      .controls {
+        display: grid;
+        gap: 0.8rem;
+        margin-top: 1.2rem;
+      }
+
+      .btn {
+        width: 100%;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--accent), #6d5efc);
+        color: white;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.9rem 1rem;
+        cursor: pointer;
+      }
+
+      .screen-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(5, 8, 22, 0.72);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(4px);
+        z-index: 30;
+      }
+
+      .screen-overlay.hidden {
+        display: none;
+      }
+
+      .screen-card {
+        background: linear-gradient(180deg, rgba(17, 24, 39, 0.96), rgba(12, 16, 29, 0.95));
+        border: 2px solid var(--line);
+        border-radius: 24px;
+        padding: 2rem 2.2rem;
+        max-width: 440px;
+        width: calc(100% - 2rem);
+        text-align: center;
+        box-shadow: 0 0 30px rgba(77, 224, 255, 0.2);
+      }
+
+      .screen-card h2 {
+        margin: 0 0 0.8rem;
+        font-size: clamp(1.8rem, 4vw, 2.7rem);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      .screen-card p {
+        color: var(--muted);
+        margin: 0 0 1.5rem;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 760px) {
+        .board-wrap {
+          grid-template-columns: 1fr;
+        }
+
+        .hud {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="portfolio-back" href="../index.html" style="position: fixed; top: 1rem; left: 1rem; z-index: 10; padding: .65rem .8rem; color: var(--gold); background: rgba(9, 14, 30, .94); border: 1px solid var(--gold); box-shadow: 4px 4px 0 rgba(255, 107, 107, .7); font-size: .7rem; font-weight: 900; letter-spacing: .06em; text-decoration: none;">&lt; VOLVER AL PORTFOLIO</a>
+    <div id="startScreen" class="screen-overlay">
+      <div class="screen-card">
+        <h2>Arkanoid</h2>
+        <p>Usa las flechas o A/D para mover la barra y destruye todos los bloques antes de perder tus vidas.</p>
+        <button id="startBtn" class="btn">Jugar</button>
+      </div>
+    </div>
+
+    <header>
+      <nav>
+        <div class="brand">GameLab</div>
+        <div class="nav-links">
+          <a href="index.html">Inicio</a>
+          <a href="tateti.html">TaTeTi</a>
+          <a href="ajedrez.html">Ajedrez</a>
+          <a href="arkanoid.html">Arkanoid</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <div class="game-shell">
+        <div class="title-wrap">
+          <h1>Arkanoid</h1>
+          <div id="status" class="status">Listo</div>
+        </div>
+
+        <div class="hud">
+          <div class="score-box">
+            <span class="score-label">Puntaje</span>
+            <span id="scoreValue" class="score-value">0</span>
+          </div>
+          <div class="score-box">
+            <span class="score-label">Vidas</span>
+            <span id="livesValue" class="score-value">3</span>
+          </div>
+          <div class="score-box">
+            <span class="score-label">Nivel</span>
+            <span id="levelValue" class="score-value">1</span>
+          </div>
+        </div>
+
+        <div class="board-wrap">
+          <div class="arena">
+            <canvas id="gameCanvas" width="720" height="480" aria-label="Juego Arkanoid"></canvas>
+          </div>
+
+          <aside class="side-panel">
+            <div class="legend">
+              <div class="legend-item">
+                <span class="dot player"></span>
+                <span>Paleta</span>
+              </div>
+              <div class="legend-item">
+                <span class="dot danger"></span>
+                <span>Pelota</span>
+              </div>
+              <div class="legend-item">
+                <span class="dot success"></span>
+                <span>Bloques</span>
+              </div>
+            </div>
+
+            <div class="controls">
+              <button id="restartBtn" class="btn">Reiniciar</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      var canvas = document.getElementById('gameCanvas');
+      var ctx = canvas.getContext('2d');
+      var scoreValue = document.getElementById('scoreValue');
+      var livesValue = document.getElementById('livesValue');
+      var levelValue = document.getElementById('levelValue');
+      var statusEl = document.getElementById('status');
+      var restartBtn = document.getElementById('restartBtn');
+      var startBtn = document.getElementById('startBtn');
+      var startScreen = document.getElementById('startScreen');
+      var screenTitle = document.querySelector('.screen-card h2');
+      var screenText = document.querySelector('.screen-card p');
+
+      var WIDTH = canvas.width;
+      var HEIGHT = canvas.height;
+      var audioCtx = null;
+      var musicTimer = null;
+      var keys = { left: false, right: false };
+
+      var gameState = {
+        phase: 'ready',
+        score: 0,
+        lives: 3,
+        level: 1,
+        paddle: { x: 0, y: HEIGHT - 35, width: 120, height: 14, speed: 9 },
+        balls: [],
+        bricks: [],
+        powerUps: [],
+        powerReady: null,
+        lastTime: 0
+      };
+
+      function ensureAudio() {
+        if (!audioCtx) {
+          var AudioCtor = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtor) {
+            audioCtx = new AudioCtor();
+          }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      }
+
+      function playTone(freq, duration, type, volume) {
+        if (!audioCtx) return;
+        var oscillator = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        oscillator.type = type || 'sine';
+        oscillator.frequency.value = freq;
+        gain.gain.value = volume || 0.04;
+        oscillator.connect(gain);
+        gain.connect(audioCtx.destination);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + duration);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+      }
+
+      function playSound(kind) {
+        if (!audioCtx) return;
+        if (kind === 'hit') {
+          playTone(180, 0.07, 'square', 0.03);
+        } else if (kind === 'brick') {
+          playTone(420, 0.09, 'triangle', 0.04);
+        } else if (kind === 'power') {
+          playTone(620, 0.14, 'sawtooth', 0.05);
+        } else if (kind === 'lose') {
+          playTone(130, 0.16, 'sawtooth', 0.04);
+        } else if (kind === 'win') {
+          playTone(660, 0.12, 'triangle', 0.05);
+        }
+      }
+
+      function startMusic() {
+        ensureAudio();
+        if (!audioCtx || musicTimer) return;
+        var sequence = [220, 330, 440, 330, 277, 415, 330, 220];
+        var index = 0;
+        musicTimer = setInterval(function () {
+          playTone(sequence[index % sequence.length], 0.18, 'triangle', 0.02);
+          index += 1;
+        }, 260);
+      }
+
+      function stopMusic() {
+        if (musicTimer) {
+          clearInterval(musicTimer);
+          musicTimer = null;
+        }
+      }
+
+      function updateHud() {
+        scoreValue.textContent = String(gameState.score);
+        livesValue.textContent = String(gameState.lives);
+        levelValue.textContent = String(gameState.level);
+      }
+
+      function randomPowerType() {
+        var powers = ['expand', 'multi', 'big', 'slow', 'life', 'laser'];
+        return powers[Math.floor(Math.random() * powers.length)];
+      }
+
+      function makeBricks() {
+        var rows = 5 + Math.min(gameState.level - 1, 2);
+        var cols = 9;
+        var brickW = 68;
+        var brickH = 22;
+        var padding = 8;
+        var offsetLeft = 48;
+        var offsetTop = 40;
+        var colors = ['#4de0ff', '#c77dff', '#ffd166', '#7ef29a', '#ff6b6b', '#f8fafc'];
+
+        gameState.bricks = [];
+        for (var row = 0; row < rows; row++) {
+          for (var col = 0; col < cols; col++) {
+            gameState.bricks.push({
+              x: offsetLeft + col * (brickW + padding),
+              y: offsetTop + row * (brickH + padding),
+              width: brickW,
+              height: brickH,
+              alive: true,
+              color: colors[row % colors.length]
+            });
+          }
+        }
+      }
+
+      function createBall() {
+        return {
+          x: gameState.paddle.x + gameState.paddle.width / 2,
+          y: gameState.paddle.y - 12,
+          radius: 9,
+          vx: (Math.random() > 0.5 ? 1 : -1) * (4 + gameState.level * 0.25),
+          vy: -(4 + Math.min(gameState.level * 0.18, 2.2))
+        };
+      }
+
+      function resetBall() {
+        gameState.balls = [createBall()];
+      }
+
+      function resetRound() {
+        gameState.paddle.x = (WIDTH - gameState.paddle.width) / 2;
+        gameState.paddle.y = HEIGHT - 35;
+        gameState.powerUps = [];
+        gameState.powerReady = null;
+        makeBricks();
+        resetBall();
+        statusEl.textContent = 'Jugando';
+        updateHud();
+      }
+
+      function showOverlay(title, text, buttonText) {
+        screenTitle.textContent = title;
+        screenText.textContent = text;
+        startBtn.textContent = buttonText || 'Jugar';
+        startScreen.classList.remove('hidden');
+      }
+
+      function hideOverlay() {
+        startScreen.classList.add('hidden');
+      }
+
+      function setReadyState() {
+        gameState.phase = 'ready';
+        showOverlay('Arkanoid', 'Usa las flechas o A/D para mover la barra y activa poderes con W o ↑.', 'Jugar');
+      }
+
+      function startGame() {
+        ensureAudio();
+        startMusic();
+        hideOverlay();
+        gameState.phase = 'playing';
+        statusEl.textContent = 'Jugando';
+      }
+
+      function endGame() {
+        gameState.phase = 'gameover';
+        stopMusic();
+        statusEl.textContent = 'Perdiste';
+        showOverlay('Fin del juego', 'Puntaje final: ' + gameState.score + '. Presiona jugar para intentarlo de nuevo.', 'Reiniciar');
+        playSound('lose');
+      }
+
+      function winGame() {
+        gameState.phase = 'won';
+        stopMusic();
+        statusEl.textContent = '¡Victoria!';
+        showOverlay('¡Victoria!', 'Completaste todos los niveles con ' + gameState.score + ' puntos. ¡Qué crack!', 'Jugar otra vez');
+        playSound('win');
+      }
+
+      function nextLevel() {
+        gameState.level += 1;
+        if (gameState.level > 5) {
+          winGame();
+          return;
+        }
+        gameState.paddle.width = Math.max(70, gameState.paddle.width - 8);
+        gameState.paddle.x = (WIDTH - gameState.paddle.width) / 2;
+        resetRound();
+        statusEl.textContent = 'Nivel ' + gameState.level;
+      }
+
+      function resetGame() {
+        gameState.score = 0;
+        gameState.lives = 3;
+        gameState.level = 1;
+        gameState.paddle.width = 120;
+        gameState.powerReady = null;
+        gameState.powerUps = [];
+        gameState.balls = [];
+        gameState.phase = 'ready';
+        statusEl.textContent = 'Listo';
+        setReadyState();
+        resetRound();
+      }
+
+      function handleKeyDown(event) {
+        var key = event.key.toLowerCase();
+        if (event.key === 'ArrowLeft' || key === 'a') keys.left = true;
+        if (event.key === 'ArrowRight' || key === 'd') keys.right = true;
+        if ((event.key === 'ArrowUp' || key === 'w') && gameState.powerReady) {
+          activatePower();
+        }
+        if ((event.key === ' ' || event.key === 'Enter') && gameState.phase !== 'playing') {
+          startGame();
+        }
+      }
+
+      function handleKeyUp(event) {
+        var key = event.key.toLowerCase();
+        if (event.key === 'ArrowLeft' || key === 'a') keys.left = false;
+        if (event.key === 'ArrowRight' || key === 'd') keys.right = false;
+      }
+
+      function updatePaddle() {
+        if (keys.left) gameState.paddle.x -= gameState.paddle.speed;
+        if (keys.right) gameState.paddle.x += gameState.paddle.speed;
+        gameState.paddle.x = Math.max(0, Math.min(WIDTH - gameState.paddle.width, gameState.paddle.x));
+      }
+
+      function spawnPowerFromBrick(brick) {
+        if (Math.random() > 0.22) return;
+        var type = randomPowerType();
+        gameState.powerUps.push({
+          x: brick.x + brick.width / 2,
+          y: brick.y + brick.height / 2,
+          radius: 9,
+          vy: 2.1,
+          type: type
+        });
+      }
+
+      function activatePower() {
+        if (!gameState.powerReady) return;
+        var power = gameState.powerReady;
+
+        if (power === 'expand') {
+          gameState.paddle.width = Math.min(220, gameState.paddle.width + 36);
+          gameState.paddle.x = Math.max(0, Math.min(WIDTH - gameState.paddle.width, gameState.paddle.x));
+          statusEl.textContent = 'Poder: Barra grande';
+        } else if (power === 'multi') {
+          var baseBall = gameState.balls[0] || createBall();
+          gameState.balls.push({
+            x: baseBall.x,
+            y: baseBall.y,
+            radius: baseBall.radius,
+            vx: -baseBall.vx * 1.12,
+            vy: -Math.abs(baseBall.vy) * 1.08
+          });
+          statusEl.textContent = 'Poder: Doble bola';
+        } else if (power === 'big') {
+          for (var i = 0; i < gameState.balls.length; i++) {
+            gameState.balls[i].radius = Math.min(18, gameState.balls[i].radius + 4);
+          }
+          statusEl.textContent = 'Poder: Bola grande';
+        } else if (power === 'slow') {
+          for (var s = 0; s < gameState.balls.length; s++) {
+            gameState.balls[s].vx *= 0.82;
+            gameState.balls[s].vy *= 0.82;
+          }
+          statusEl.textContent = 'Poder: Bola lenta';
+        } else if (power === 'life') {
+          gameState.lives += 1;
+          updateHud();
+          statusEl.textContent = 'Poder: +1 vida';
+        } else if (power === 'laser') {
+          gameState.balls.forEach(function (ball) {
+            ball.vx *= 1.2;
+            ball.vy *= 1.2;
+          });
+          statusEl.textContent = 'Poder: Rayo';
+        }
+
+        playSound('power');
+        gameState.powerReady = null;
+      }
+
+      function updatePowerUps() {
+        for (var i = gameState.powerUps.length - 1; i >= 0; i--) {
+          var p = gameState.powerUps[i];
+          p.y += p.vy;
+
+          var caught =
+            p.y + p.radius >= gameState.paddle.y &&
+            p.y - p.radius <= gameState.paddle.y + gameState.paddle.height &&
+            p.x >= gameState.paddle.x &&
+            p.x <= gameState.paddle.x + gameState.paddle.width;
+
+          if (caught) {
+            gameState.powerReady = p.type;
+            statusEl.textContent = 'Poder listo: ' + p.type + ' · Presiona W / ↑';
+            playSound('power');
+            gameState.powerUps.splice(i, 1);
+            continue;
+          }
+
+          if (p.y - p.radius > HEIGHT) {
+            gameState.powerUps.splice(i, 1);
+          }
+        }
+      }
+
+      function brickCollision(ball) {
+        var hits = 0;
+        var maxHits = ball.radius > 10 ? 2 : 1;
+
+        while (hits < maxHits) {
+          var targetBrick = null;
+          var targetIndex = -1;
+
+          for (var i = 0; i < gameState.bricks.length; i++) {
+            var brick = gameState.bricks[i];
+            if (!brick.alive) continue;
+
+            var closestX = Math.max(brick.x, Math.min(ball.x, brick.x + brick.width));
+            var closestY = Math.max(brick.y, Math.min(ball.y, brick.y + brick.height));
+            var dx = ball.x - closestX;
+            var dy = ball.y - closestY;
+
+            if (dx * dx + dy * dy <= ball.radius * ball.radius) {
+              targetBrick = brick;
+              targetIndex = i;
+              break;
+            }
+          }
+
+          if (!targetBrick) break;
+
+          targetBrick.alive = false;
+          gameState.score += 10;
+          playSound('brick');
+          spawnPowerFromBrick(targetBrick);
+          updateHud();
+
+          var overlapLeft = ball.x + ball.radius - targetBrick.x;
+          var overlapRight = targetBrick.x + targetBrick.width - (ball.x - ball.radius);
+          var overlapTop = ball.y + ball.radius - targetBrick.y;
+          var overlapBottom = targetBrick.y + targetBrick.height - (ball.y - ball.radius);
+          var minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+
+          if (minOverlap === overlapLeft || minOverlap === overlapRight) {
+            ball.vx *= -1;
+          } else {
+            ball.vy *= -1;
+          }
+
+          hits += 1;
+          gameState.bricks.splice(targetIndex, 1);
+          gameState.bricks.push(targetBrick);
+        }
+      }
+
+      function paddleCollision(ball) {
+        var p = gameState.paddle;
+        if (
+          ball.y + ball.radius >= p.y &&
+          ball.y - ball.radius <= p.y + p.height &&
+          ball.x >= p.x &&
+          ball.x <= p.x + p.width &&
+          ball.vy > 0
+        ) {
+          var relative = (ball.x - (p.x + p.width / 2)) / (p.width / 2);
+          ball.vx = relative * 6;
+          ball.vy = -Math.abs(ball.vy);
+          ball.y = p.y - ball.radius - 1;
+          playSound('hit');
+        }
+      }
+
+      function updateBall(ball) {
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+
+        if (ball.x - ball.radius <= 0 || ball.x + ball.radius >= WIDTH) {
+          ball.vx *= -1;
+          ball.x = Math.max(ball.radius, Math.min(WIDTH - ball.radius, ball.x));
+        }
+
+        if (ball.y - ball.radius <= 0) {
+          ball.vy *= -1;
+          ball.y = ball.radius;
+        }
+
+        if (ball.y - ball.radius > HEIGHT) {
+          return false;
+        }
+
+        paddleCollision(ball);
+        brickCollision(ball);
+        return true;
+      }
+
+      function updateGame() {
+        if (gameState.phase !== 'playing') return;
+        updatePaddle();
+
+        var remainingBalls = [];
+        for (var i = 0; i < gameState.balls.length; i++) {
+          var ball = gameState.balls[i];
+          if (updateBall(ball)) {
+            remainingBalls.push(ball);
+          }
+        }
+        gameState.balls = remainingBalls;
+
+        if (gameState.balls.length === 0) {
+          gameState.lives -= 1;
+          updateHud();
+          playSound('lose');
+
+          if (gameState.lives <= 0) {
+            endGame();
+            return;
+          }
+
+          resetBall();
+          statusEl.textContent = 'Vidas restantes: ' + gameState.lives;
+        }
+
+        if (gameState.bricks.every(function (brick) { return !brick.alive; })) {
+          nextLevel();
+        }
+
+        updatePowerUps();
+      }
+
+      function drawBackground() {
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+        ctx.strokeStyle = 'rgba(77, 224, 255, 0.12)';
+        ctx.lineWidth = 1;
+        for (var x = 0; x < WIDTH; x += 40) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, HEIGHT);
+          ctx.stroke();
+        }
+        for (var y = 0; y < HEIGHT; y += 40) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(WIDTH, y);
+          ctx.stroke();
+        }
+      }
+
+      function drawPaddle() {
+        var p = gameState.paddle;
+        ctx.fillStyle = '#4de0ff';
+        ctx.fillRect(p.x, p.y, p.width, p.height);
+      }
+
+      function drawBall(ball) {
+        ctx.beginPath();
+        ctx.fillStyle = '#ff6b6b';
+        ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      function drawBricks() {
+        gameState.bricks.forEach(function (brick) {
+          if (!brick.alive) return;
+          ctx.fillStyle = brick.color;
+          ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
+          ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+          ctx.strokeRect(brick.x, brick.y, brick.width, brick.height);
+        });
+      }
+
+      function drawPowerUps() {
+        gameState.powerUps.forEach(function (power) {
+          ctx.beginPath();
+          ctx.fillStyle = '#7ef29a';
+          ctx.arc(power.x, power.y, power.radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#0f172a';
+          ctx.font = 'bold 10px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(power.type.charAt(0).toUpperCase(), power.x, power.y + 3);
+        });
+      }
+
+      function draw() {
+        drawBackground();
+        drawBricks();
+        drawPowerUps();
+        drawPaddle();
+        gameState.balls.forEach(drawBall);
+      }
+
+      function gameLoop() {
+        updateGame();
+        draw();
+        requestAnimationFrame(gameLoop);
+      }
+
+      document.addEventListener('keydown', handleKeyDown);
+      document.addEventListener('keyup', handleKeyUp);
+      restartBtn.addEventListener('click', function () {
+        resetGame();
+        startGame();
+      });
+      startBtn.addEventListener('click', function () {
+        startGame();
+      });
+
+      resetGame();
+      requestAnimationFrame(gameLoop);
+    </script>
+  </body>
+</html>

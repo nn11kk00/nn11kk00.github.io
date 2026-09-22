@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaTeTi</title>
+    <style>
+      :root {
+        --bg-1: #050816;
+        --bg-2: #120f2a;
+        --bg-3: #1d1130;
+        --panel: rgba(12, 18, 35, 0.9);
+        --card: rgba(16, 24, 40, 0.9);
+        --line: rgba(109, 238, 255, 0.38);
+        --text: #edf8ff;
+        --muted: #cfe7ff;
+        --player: #4de0ff;
+        --cpu: #ff6b6b;
+        --accent: #c77dff;
+        --gold: #ffd166;
+        --success: #7ef29a;
+        --shadow: rgba(0, 0, 0, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background:
+          radial-gradient(circle at top, rgba(199, 125, 255, 0.22), transparent 25%),
+          linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+        color: var(--text);
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.03),
+          rgba(255, 255, 255, 0.03) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+        pointer-events: none;
+      }
+
+      header {
+        background: rgba(9, 14, 30, 0.9);
+        border-bottom: 1px solid var(--line);
+        box-shadow: 0 0 20px rgba(77, 224, 255, 0.25);
+      }
+
+      nav {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .brand {
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold);
+        text-shadow: 0 0 12px rgba(255, 209, 102, 0.8);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .nav-links a {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.9;
+        padding: 0.55rem 0.85rem;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        transition: 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        opacity: 1;
+        border-color: var(--line);
+        box-shadow: 0 0 16px rgba(77, 224, 255, 0.38);
+      }
+
+      main {
+        max-width: 980px;
+        margin: 2rem auto;
+        padding: 0 1rem 2rem;
+      }
+
+      .game-shell {
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(12, 16, 29, 0.82));
+        border: 2px solid var(--line);
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow:
+          0 0 0 2px rgba(79, 70, 229, 0.2),
+          0 0 35px rgba(77, 224, 255, 0.18),
+          0 18px 50px var(--shadow);
+      }
+
+      .title-wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.1rem, 5vw, 3.3rem);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-shadow: 0 0 18px rgba(77, 224, 255, 0.6);
+      }
+
+      .status {
+        background: rgba(199, 125, 255, 0.12);
+        border: 1px solid rgba(199, 125, 255, 0.6);
+        box-shadow: 0 0 18px rgba(199, 125, 255, 0.2);
+        color: var(--muted);
+        border-radius: 999px;
+        padding: 0.8rem 1.1rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .hud {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(120px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.6rem;
+      }
+
+      .score-box {
+        background: rgba(17, 24, 39, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 0.9rem 1rem;
+        text-align: center;
+      }
+
+      .score-label {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 0.4rem;
+      }
+
+      .score-value {
+        font-size: clamp(1.5rem, 3vw, 2.2rem);
+        font-weight: 900;
+        color: var(--gold);
+      }
+
+      .board-wrap {
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) minmax(220px, 320px);
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .tablero {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(80px, 130px));
+        gap: 12px;
+        justify-content: center;
+        background: rgba(17, 24, 39, 0.8);
+        padding: 1.2rem;
+        border: 1px solid rgba(77, 224, 255, 0.3);
+        border-radius: 22px;
+        box-shadow: inset 0 0 25px rgba(77, 224, 255, 0.08);
+      }
+
+      .celda {
+        width: 100%;
+        aspect-ratio: 1;
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(13, 26, 43, 0.82));
+        color: var(--text);
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 900;
+        cursor: pointer;
+        text-shadow: 0 0 12px currentColor;
+        transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      }
+
+      .celda:hover:not(:disabled) {
+        transform: translateY(-2px) scale(1.02);
+        border-color: rgba(77, 224, 255, 0.8);
+        box-shadow: 0 0 22px rgba(77, 224, 255, 0.28);
+      }
+
+      .celda:disabled {
+        cursor: default;
+      }
+
+      .celda.player {
+        color: var(--player);
+        box-shadow: inset 0 0 15px rgba(77, 224, 255, 0.2), 0 0 18px rgba(77, 224, 255, 0.18);
+      }
+
+      .celda.cpu {
+        color: var(--cpu);
+        box-shadow: inset 0 0 15px rgba(255, 107, 107, 0.18), 0 0 18px rgba(255, 107, 107, 0.18);
+      }
+
+      .side-panel {
+        background: rgba(16, 24, 40, 0.9);
+        border: 1px solid rgba(255, 209, 102, 0.28);
+        border-radius: 20px;
+        padding: 1.2rem;
+        box-shadow: inset 0 0 16px rgba(255, 209, 102, 0.04);
+      }
+
+      .legend {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 12px currentColor;
+      }
+
+      .dot.player { background: var(--player); color: var(--player); }
+      .dot.cpu { background: var(--cpu); color: var(--cpu); }
+
+      .controls {
+        display: grid;
+        gap: 0.8rem;
+        margin-top: 1.2rem;
+      }
+
+      .btn {
+        width: 100%;
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.9rem 1rem;
+        cursor: pointer;
+        transition: transform 0.15s ease, filter 0.15s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.08);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent), #6d5efc);
+        box-shadow: 0 0 20px rgba(199, 125, 255, 0.5);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(135deg, #0ea5e9, #2563eb);
+        box-shadow: 0 0 18px rgba(14, 165, 233, 0.4);
+      }
+
+      .screen-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(5, 8, 22, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(6px);
+        z-index: 20;
+      }
+
+      .screen-overlay.hidden {
+        display: none;
+      }
+
+      .screen-card {
+        background: linear-gradient(180deg, rgba(17, 24, 39, 0.96), rgba(12, 16, 29, 0.95));
+        border: 2px solid var(--line);
+        border-radius: 24px;
+        padding: 2rem 2.2rem;
+        max-width: 440px;
+        width: calc(100% - 2rem);
+        text-align: center;
+        box-shadow: 0 0 30px rgba(77, 224, 255, 0.2);
+      }
+
+      .screen-card h2 {
+        margin: 0 0 0.8rem;
+        font-size: clamp(1.8rem, 4vw, 2.7rem);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      .screen-card p {
+        color: var(--muted);
+        margin: 0 0 1.5rem;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 760px) {
+        .board-wrap {
+          grid-template-columns: 1fr;
+        }
+
+        .game-shell {
+          padding: 1.2rem;
+        }
+
+        .hud {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="portfolio-back" href="../index.html" style="position: fixed; top: 1rem; left: 1rem; z-index: 10; padding: .65rem .8rem; color: var(--gold); background: rgba(9, 14, 30, .94); border: 1px solid var(--gold); box-shadow: 4px 4px 0 rgba(255, 107, 107, .7); font-size: .7rem; font-weight: 900; letter-spacing: .06em; text-decoration: none;">&lt; VOLVER AL PORTFOLIO</a>
+    <div id="startScreen" class="screen-overlay">
+      <div class="screen-card">
+        <h2>Arcade Mode</h2>
+        <p>Desafía a la máquina en una partida épica de 3 en raya. Presiona iniciar para comenzar.</p>
+        <button id="startBtn" class="btn btn-primary">Iniciar partida</button>
+      </div>
+    </div>
+
+    <header>
+      <nav>
+        <div class="brand">GameLab</div>
+        <div class="nav-links">
+          <a href="index.html">Inicio</a>
+          <a href="tateti.html">Juegos</a>
+          <a href="ajedrez.html">Ajedrez</a>
+          <a href="arkanoid.html">Arkanoid</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <div class="game-shell">
+        <div class="title-wrap">
+          <h1>TaTeTi</h1>
+          <div id="status" class="status">Esperando partida</div>
+        </div>
+
+        <div class="hud">
+          <div class="score-box">
+            <span class="score-label">Jugador</span>
+            <span id="playerScore" class="score-value">0</span>
+          </div>
+          <div class="score-box">
+            <span class="score-label">Empates</span>
+            <span id="drawScore" class="score-value">0</span>
+          </div>
+          <div class="score-box">
+            <span class="score-label">Máquina</span>
+            <span id="cpuScore" class="score-value">0</span>
+          </div>
+        </div>
+
+        <div class="board-wrap">
+          <div class="tablero" id="tablero" aria-label="Tablero de tic tac toe">
+            <button class="celda" data-index="0" aria-label="Casilla 1"></button>
+            <button class="celda" data-index="1" aria-label="Casilla 2"></button>
+            <button class="celda" data-index="2" aria-label="Casilla 3"></button>
+            <button class="celda" data-index="3" aria-label="Casilla 4"></button>
+            <button class="celda" data-index="4" aria-label="Casilla 5"></button>
+            <button class="celda" data-index="5" aria-label="Casilla 6"></button>
+            <button class="celda" data-index="6" aria-label="Casilla 7"></button>
+            <button class="celda" data-index="7" aria-label="Casilla 8"></button>
+            <button class="celda" data-index="8" aria-label="Casilla 9"></button>
+          </div>
+
+          <aside class="side-panel">
+            <div class="legend">
+              <div class="legend-item">
+                <span class="dot player"></span>
+                <span>Tu símbolo: X</span>
+              </div>
+              <div class="legend-item">
+                <span class="dot cpu"></span>
+                <span>Máquina: O</span>
+              </div>
+            </div>
+
+            <div class="controls">
+              <button id="restartBtn" class="btn btn-primary">Reiniciar partida</button>
+              <button id="toggleMusicBtn" class="btn btn-secondary">Musica: ON</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const WIN_COMBINATIONS = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+      ];
+
+      const PLAYER = 'X';
+      const CPU = 'O';
+
+      const state = {
+        board: Array(9).fill(''),
+        isPlayerTurn: true,
+        gameActive: false,
+        scores: {
+          player: 0,
+          cpu: 0,
+          draws: 0
+        },
+        audioEnabled: true,
+        musicInterval: null
+      };
+
+      const cells = [...document.querySelectorAll('.celda')];
+      const statusEl = document.getElementById('status');
+      const restartBtn = document.getElementById('restartBtn');
+      const startBtn = document.getElementById('startBtn');
+      const startScreen = document.getElementById('startScreen');
+      const toggleMusicBtn = document.getElementById('toggleMusicBtn');
+      const playerScoreEl = document.getElementById('playerScore');
+      const cpuScoreEl = document.getElementById('cpuScore');
+      const drawScoreEl = document.getElementById('drawScore');
+
+      let audioContext;
+
+      function initAudio() {
+        if (!audioContext) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          audioContext = new AudioCtx();
+        }
+
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+      }
+
+      function playTone(frequency, duration, type = 'sine', volume = 0.05, delay = 0) {
+        if (!state.audioEnabled || !audioContext) return;
+
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime + delay);
+
+        gainNode.gain.setValueAtTime(0.0001, audioContext.currentTime + delay);
+        gainNode.gain.exponentialRampToValueAtTime(volume, audioContext.currentTime + delay + 0.02);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + delay + duration);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        oscillator.start(audioContext.currentTime + delay);
+        oscillator.stop(audioContext.currentTime + delay + duration);
+      }
+
+      function playMoveSound(symbol) {
+        initAudio();
+        if (symbol === PLAYER) {
+          playTone(660, 0.12, 'square', 0.06);
+          playTone(880, 0.08, 'triangle', 0.04, 0.04);
+        } else {
+          playTone(220, 0.15, 'sawtooth', 0.05);
+          playTone(180, 0.12, 'triangle', 0.04, 0.05);
+        }
+      }
+
+      function playWinSound() {
+        initAudio();
+        playTone(523.25, 0.14, 'square', 0.06);
+        playTone(659.25, 0.14, 'square', 0.06, 0.08);
+        playTone(783.99, 0.2, 'triangle', 0.06, 0.16);
+      }
+
+      function playLoseSound() {
+        initAudio();
+        playTone(220, 0.2, 'sawtooth', 0.06);
+        playTone(180, 0.25, 'sawtooth', 0.06, 0.12);
+      }
+
+      function playDrawSound() {
+        initAudio();
+        playTone(300, 0.1, 'triangle', 0.05);
+        playTone(260, 0.1, 'triangle', 0.05, 0.08);
+        playTone(220, 0.14, 'triangle', 0.05, 0.16);
+      }
+
+      function playButtonSound() {
+        initAudio();
+        playTone(520, 0.07, 'square', 0.04);
+      }
+
+      function playMusicLoop() {
+        if (!state.audioEnabled) return;
+        if (state.musicInterval) return;
+
+        initAudio();
+
+        const notes = [220, 277, 330, 392, 330, 277, 220, 247];
+        let index = 0;
+
+        state.musicInterval = setInterval(() => {
+          if (!state.audioEnabled) return;
+          const note = notes[index % notes.length];
+          playTone(note, 0.14, 'triangle', 0.02);
+          if (Math.random() > 0.5) {
+            playTone(note / 2, 0.09, 'sine', 0.012, 0.03);
+          }
+          index += 1;
+        }, 260);
+      }
+
+      function stopMusicLoop() {
+        if (state.musicInterval) {
+          clearInterval(state.musicInterval);
+          state.musicInterval = null;
+        }
+      }
+
+      function updateScoreboard() {
+        playerScoreEl.textContent = state.scores.player;
+        cpuScoreEl.textContent = state.scores.cpu;
+        drawScoreEl.textContent = state.scores.draws;
+      }
+
+      function getWinner(currentBoard) {
+        for (const combo of WIN_COMBINATIONS) {
+          const [a, b, c] = combo;
+          if (currentBoard[a] && currentBoard[a] === currentBoard[b] && currentBoard[a] === currentBoard[c]) {
+            return currentBoard[a];
+          }
+        }
+        return null;
+      }
+
+      function checkEndState(currentBoard) {
+        const winner = getWinner(currentBoard);
+        if (winner === PLAYER) {
+          statusEl.textContent = '¡Ganaste!';
+          state.gameActive = false;
+          state.scores.player += 1;
+          updateScoreboard();
+          playWinSound();
+          return true;
+        }
+
+        if (winner === CPU) {
+          statusEl.textContent = 'La máquina gana.';
+          state.gameActive = false;
+          state.scores.cpu += 1;
+          updateScoreboard();
+          playLoseSound();
+          return true;
+        }
+
+        if (currentBoard.every(Boolean)) {
+          statusEl.textContent = 'Empate.';
+          state.gameActive = false;
+          state.scores.draws += 1;
+          updateScoreboard();
+          playDrawSound();
+          return true;
+        }
+
+        return false;
+      }
+
+      function renderBoard() {
+        cells.forEach((cell) => {
+          const index = Number(cell.dataset.index);
+          const value = state.board[index];
+          cell.textContent = value;
+          cell.disabled = !state.gameActive || value !== '' || !state.isPlayerTurn;
+          cell.classList.remove('player', 'cpu');
+
+          if (value === PLAYER) {
+            cell.classList.add('player');
+          }
+
+          if (value === CPU) {
+            cell.classList.add('cpu');
+          }
+        });
+
+        if (state.gameActive) {
+          statusEl.textContent = state.isPlayerTurn ? 'Tu turno' : 'La máquina piensa...';
+        }
+      }
+
+      function makeMove(index, symbol) {
+        if (state.board[index] || !state.gameActive) return false;
+        state.board[index] = symbol;
+        return true;
+      }
+
+      function minimax(currentBoard, isMaximizing) {
+        const winner = getWinner(currentBoard);
+
+        if (winner === CPU) return 10;
+        if (winner === PLAYER) return -10;
+        if (currentBoard.every(Boolean)) return 0;
+
+        if (isMaximizing) {
+          let bestScore = -Infinity;
+
+          for (let i = 0; i < currentBoard.length; i++) {
+            if (!currentBoard[i]) {
+              currentBoard[i] = CPU;
+              const score = minimax(currentBoard, false);
+              currentBoard[i] = '';
+              bestScore = Math.max(bestScore, score);
+            }
+          }
+
+          return bestScore;
+        }
+
+        let bestScore = Infinity;
+
+        for (let i = 0; i < currentBoard.length; i++) {
+          if (!currentBoard[i]) {
+            currentBoard[i] = PLAYER;
+            const score = minimax(currentBoard, true);
+            currentBoard[i] = '';
+            bestScore = Math.min(bestScore, score);
+          }
+        }
+
+        return bestScore;
+      }
+
+      function findBestMove(currentBoard) {
+        let bestScore = -Infinity;
+        let bestMove = null;
+
+        for (let i = 0; i < currentBoard.length; i++) {
+          if (!currentBoard[i]) {
+            currentBoard[i] = CPU;
+            const score = minimax(currentBoard, false);
+            currentBoard[i] = '';
+
+            if (score > bestScore) {
+              bestScore = score;
+              bestMove = i;
+            }
+          }
+        }
+
+        return bestMove;
+      }
+
+      function cpuTurn() {
+        if (!state.gameActive) return;
+
+        setTimeout(() => {
+          const move = findBestMove(state.board);
+
+          if (move !== null && move !== undefined) {
+            makeMove(move, CPU);
+            playMoveSound(CPU);
+
+            if (!checkEndState(state.board)) {
+              state.isPlayerTurn = true;
+            }
+
+            renderBoard();
+          }
+        }, 400);
+      }
+
+      function handleCellClick(event) {
+        const index = Number(event.target.dataset.index);
+
+        if (!state.gameActive || !state.isPlayerTurn || state.board[index]) {
+          return;
+        }
+
+        initAudio();
+
+        if (makeMove(index, PLAYER)) {
+          playMoveSound(PLAYER);
+
+          if (!checkEndState(state.board)) {
+            state.isPlayerTurn = false;
+            renderBoard();
+            cpuTurn();
+          } else {
+            renderBoard();
+          }
+        }
+      }
+
+      function startGame() {
+        playButtonSound();
+        state.board = Array(9).fill('');
+        state.isPlayerTurn = true;
+        state.gameActive = true;
+        startScreen.classList.add('hidden');
+        renderBoard();
+        playMusicLoop();
+      }
+
+      function resetGame() {
+        playButtonSound();
+        state.board = Array(9).fill('');
+        state.isPlayerTurn = true;
+        state.gameActive = true;
+        renderBoard();
+      }
+
+      function toggleMusic() {
+        state.audioEnabled = !state.audioEnabled;
+        toggleMusicBtn.textContent = `Música: ${state.audioEnabled ? 'ON' : 'OFF'}`;
+
+        if (state.audioEnabled) {
+          playMusicLoop();
+          initAudio();
+        } else {
+          stopMusicLoop();
+        }
+      }
+
+      cells.forEach((cell) => cell.addEventListener('click', handleCellClick));
+      restartBtn.addEventListener('click', resetGame);
+      startBtn.addEventListener('click', startGame);
+      toggleMusicBtn.addEventListener('click', toggleMusic);
+
+      updateScoreboard();
+      renderBoard();
+      toggleMusicBtn.textContent = `Música: ${state.audioEnabled ? 'ON' : 'OFF'}`;
+    </script>
+  </body>
+</html>
