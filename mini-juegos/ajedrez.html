@@ -271,7 +271,7 @@
     </style>
   </head>
   <body>
-    <a class="portfolio-back" href="../index.html" style="position: fixed; top: 1rem; left: 1rem; z-index: 10; padding: .65rem .8rem; color: var(--gold); background: rgba(9, 14, 30, .94); border: 1px solid var(--gold); box-shadow: 4px 4px 0 rgba(255, 107, 107, .7); font-size: .7rem; font-weight: 900; letter-spacing: .06em; text-decoration: none;">&lt; VOLVER AL PORTFOLIO</a>
+    <a class="portfolio-back" href="../catalogos-vibe-code.html" style="position: fixed; top: 1rem; left: 1rem; z-index: 10; padding: .65rem .8rem; color: var(--gold); background: rgba(9, 14, 30, .94); border: 1px solid var(--gold); box-shadow: 4px 4px 0 rgba(255, 107, 107, .7); font-size: .7rem; font-weight: 900; letter-spacing: .06em; text-decoration: none;">&lt; VOLVER A VIBE-LAB</a>
     <header>
       <nav>
         <div class="brand">GameLab</div>
@@ -473,6 +473,13 @@
         var king = findKing(boardState, side);
         if (!king) return false;
         return isSquareAttacked(boardState, king.row, king.col, side === WHITE ? BLACK : WHITE);
+      }
+
+      function endIfKingCaptured(sideThatMoved, opponentSide) {
+        if (findKing(board, opponentSide)) return false;
+        gameOver = true;
+        statusEl.textContent = sideThatMoved === WHITE ? '¡Ganaste! Rey capturado' : 'La máquina gana: rey capturado';
+        return true;
       }
 
       function applyMove(boardState, move) {
@@ -749,6 +756,11 @@
           selected = null;
 
           var nextTurn = currentTurn === WHITE ? BLACK : WHITE;
+          if (endIfKingCaptured(currentTurn, nextTurn)) {
+            renderBoard();
+            return;
+          }
+
           if (!getLegalMovesForSide(board, nextTurn).length) {
             gameOver = true;
             statusEl.textContent = isKingInCheck(board, nextTurn) ? (currentTurn === WHITE ? '¡Ganaste!' : 'La máquina gana') : 'Empate';
@@ -780,6 +792,11 @@
 
               if (cpuMovingPiece === 'bP' && computerMove.from[0] === 1 && Math.abs(computerMove.to[0] - computerMove.from[0]) === 2) {
                 enPassantTarget = [2, computerMove.to[1]];
+              }
+
+              if (endIfKingCaptured(BLACK, WHITE)) {
+                renderBoard();
+                return;
               }
 
               if (!getLegalMovesForSide(board, WHITE).length) {
